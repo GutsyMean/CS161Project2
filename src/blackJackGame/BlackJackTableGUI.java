@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -34,6 +35,7 @@ public class BlackJackTableGUI extends Application
     private HBox dealerCardBox;
     private HBox playerCardBox;
     private HBox titleBox;
+    private HBox dealerValue;
 
     @Override
     public void start(Stage primaryStage) throws Exception 
@@ -61,15 +63,17 @@ public class BlackJackTableGUI extends Application
         dealerHandValueLabel = new Label("Dealer Hand Value: ");
         dealerHandValueLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         dealerHandValueLabel.setTextFill(Color.BLACK);
-        dealerHandValueBox = new HBox(dealerHandValueLabel);
+        dealerHandValueBox = new HBox();
+        dealerValue = new HBox(dealer.valueOfHand());
+        dealerHandValueBox.getChildren().addAll(dealerHandValueLabel, dealerValue);
         dealerHandValueBox.setAlignment(Pos.CENTER_LEFT);
         dealerHandValueBox.setPadding(new Insets(0, 0, 0, 100));
         
-        playerCardBox = new HBox(new Card("C:\\Users\\timot\\OneDrive\\Desktop\\CS161\\cards"));
+        playerCardBox = new HBox();
         playerCardBox.setAlignment(Pos.CENTER);
         playerCardBox.setPadding(new Insets(10));
-        
-        dealerCardBox = new HBox(new Card("C:\\Users\\timot\\OneDrive\\Desktop\\CS161\\cards"));
+
+        dealerCardBox = new HBox();
         dealerCardBox.setAlignment(Pos.CENTER);
         dealerCardBox.setPadding(new Insets(10));
         
@@ -117,10 +121,16 @@ public class BlackJackTableGUI extends Application
         grid.add(startButton, 0, 4);
         grid.add(hitButton, 1, 4);
         grid.add(standButton, 2, 4);
+        grid.setStyle("-fx-background-color: forestgreen");
+
+        
         Scene scene = new Scene(grid);
+
         
         primaryStage.setTitle("Blackjack");
         primaryStage.setScene(scene);
+        primaryStage.setHeight(750);
+        primaryStage.setWidth(800);
         primaryStage.show();
     }
     
@@ -144,7 +154,8 @@ public class BlackJackTableGUI extends Application
 	    box.getChildren().clear();
 	    for (Card card : p.getHand()) 
 	    {
-	        ImageView iv = new ImageView(card.getFace());
+	    	Image image = new Image("file:/Users/timothy_bogun/eclipse-workspace/Project2/cards/"+card.getFace()+".png");
+	        ImageView iv = new ImageView(image);
 	        box.getChildren().add(iv);
 	    }
 	    handValue.setText(String.valueOf(p.valueOfHand()));
