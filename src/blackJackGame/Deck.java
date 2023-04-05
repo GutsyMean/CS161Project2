@@ -15,6 +15,7 @@ public class Deck
 	}
 	public void reset()
 	{
+		
 		cards = new ArrayList<Card>();
 		for (String face : Card.getFACES())
 		{

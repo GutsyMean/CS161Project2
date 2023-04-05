@@ -13,7 +13,7 @@ public class Card extends ImageView
 	public Card(String face)
 	{	
 		this.face = face;
-		Image image = new Image("file:/Users/timothy_bogun/eclipse-workspace/Project2/cards/"+face+".png");
+		Image image = new Image("file:C:\\Users\\timot\\eclipse-workspace\\Project2\\cards\\"+face+".png");
 		ImageView imageView = new ImageView(image);
 		
 		imageView.setFitHeight(HEIGHT);

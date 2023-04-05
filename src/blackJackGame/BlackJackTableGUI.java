@@ -106,17 +106,17 @@ public class BlackJackTableGUI extends Application
     	    while (dealer.valueOfHand() < 17) 
     	    {
     	    	dealer.hit();
-    	        updateHand(dealer, dealerHandValueBox, dealerHandValueLabel);
+    	        updateHand(dealer, dealerCardBox, dealerHandValueLabel);
     	    }
     	    endGame();
     	});
         
         GridPane grid = new GridPane();
         grid.add(titleBox, 0, 0, 3, 1);
-        grid.add(playerHandValueBox, 0, 1);
-        grid.add(playerCardBox, 1, 1);
-        grid.add(dealerHandValueBox, 0, 2);
-        grid.add(dealerCardBox, 1, 2);
+        grid.add(dealerHandValueBox, 0, 1);
+        grid.add(dealerCardBox, 1, 1);
+        grid.add(playerHandValueBox, 0, 2);
+        grid.add(playerCardBox, 1, 2);
         grid.add(gameResultBox, 0, 3, 3, 1);
         grid.add(startButton, 0, 4);
         grid.add(hitButton, 1, 4);
@@ -142,8 +142,8 @@ public class BlackJackTableGUI extends Application
 	    player.clearHand();
 	    dealer.hit();
 	    player.hit();
-	    updateHand(dealer, dealerHandValueBox, dealerHandValueLabel);
-	    updateHand(player, playerHandValueBox, playerHandValueLabel);
+	    updateHand(dealer, dealerCardBox, dealerHandValueLabel);
+	    updateHand(player, playerCardBox, playerHandValueLabel);
 	    gameResultLabel.setText("");
 	    startButton.setDisable(true);
 	    hitButton.setDisable(false);
@@ -154,7 +154,7 @@ public class BlackJackTableGUI extends Application
 	    box.getChildren().clear();
 	    for (Card card : p.getHand()) 
 	    {
-	    	Image image = new Image("file:/Users/timothy_bogun/eclipse-workspace/Project2/cards/"+card.getFace()+".png");
+	    	Image image = new Image("file:C:\\Users\\timot\\eclipse-workspace\\Project2\\cards\\"+card.getFace()+".png");
 	        ImageView iv = new ImageView(image);
 	        box.getChildren().add(iv);
 	    }
