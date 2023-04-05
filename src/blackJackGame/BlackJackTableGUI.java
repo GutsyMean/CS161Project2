@@ -8,8 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,9 +25,12 @@ public class BlackJackTableGUI extends Application
     private Player dealer;
     private Player player;
     private Label playerHandValueLabel;
+    private Label playerScoreLabel;
     private Label dealerHandValueLabel;
+    private Label dealerScoreLabel;
     private Label gameResultLabel;
-    private Label titleLabel;
+    private Label dealerHandLabel;
+    private Label playerHandLabel;
     private Button standButton;
     private Button hitButton;
     private Button startButton;
@@ -34,8 +39,8 @@ public class BlackJackTableGUI extends Application
     private HBox gameResultBox;
     private HBox dealerCardBox;
     private HBox playerCardBox;
-    private HBox titleBox;
-    private HBox dealerValue;
+    private HBox playerHandBox;
+    private HBox dealerHandBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception 
@@ -46,43 +51,41 @@ public class BlackJackTableGUI extends Application
         player = new Player();
 
         // Create the GUI elements
-        titleLabel = new Label("Blackjack");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        titleLabel.setTextFill(Color.BLACK);
-        titleBox = new HBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setPadding(new Insets(10));
         
-        playerHandValueLabel = new Label("Player Hand Value: ");
+        playerHandLabel = new Label("Player Hand"); 
+        playerHandLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        playerHandLabel.setTextFill(Color.WHITE);
+        playerHandValueLabel = new Label("Player Value: ");
         playerHandValueLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        playerHandValueLabel.setTextFill(Color.BLACK);
-        playerHandValueBox = new HBox(playerHandValueLabel);
+        playerHandValueLabel.setTextFill(Color.WHITE);
+        playerHandValueBox = new HBox(200, playerHandLabel, playerHandValueLabel);
         playerHandValueBox.setAlignment(Pos.CENTER_LEFT);
-        playerHandValueBox.setPadding(new Insets(0, 0, 0, 100));
+        playerHandValueBox.setPadding(new Insets(0, 0, 0, 200));
         
-        dealerHandValueLabel = new Label("Dealer Hand Value: ");
+        dealerHandLabel = new Label("Dealer Hand");
+        dealerHandLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        dealerHandLabel.setTextFill(Color.WHITE);
+        dealerHandValueLabel = new Label("Dealer Value: ");
         dealerHandValueLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        dealerHandValueLabel.setTextFill(Color.BLACK);
-        dealerHandValueBox = new HBox();
-        dealerValue = new HBox(dealer.valueOfHand());
-        dealerHandValueBox.getChildren().addAll(dealerHandValueLabel, dealerValue);
+        dealerHandValueLabel.setTextFill(Color.WHITE);
+        dealerHandValueBox = new HBox(200, dealerHandLabel, dealerHandValueLabel);
         dealerHandValueBox.setAlignment(Pos.CENTER_LEFT);
-        dealerHandValueBox.setPadding(new Insets(0, 0, 0, 100));
+        dealerHandValueBox.setPadding(new Insets(10, 0, 0, 200));
         
         playerCardBox = new HBox();
-        playerCardBox.setAlignment(Pos.CENTER);
+        playerCardBox.setAlignment(Pos.CENTER_LEFT);
         playerCardBox.setPadding(new Insets(10));
 
         dealerCardBox = new HBox();
-        dealerCardBox.setAlignment(Pos.CENTER);
+        dealerCardBox.setAlignment(Pos.CENTER_LEFT);
         dealerCardBox.setPadding(new Insets(10));
         
         gameResultLabel = new Label("");
         gameResultLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        gameResultLabel.setTextFill(Color.BLACK);
+        gameResultLabel.setTextFill(Color.WHITE);
         gameResultBox = new HBox(gameResultLabel);
         gameResultBox.setAlignment(Pos.CENTER);
-        gameResultBox.setPadding(new Insets(0, 0, 0, 280));
+        gameResultBox.setPadding(new Insets(0, 0, 0, 200));
 
         startButton = new Button("Start");
         startButton.setOnAction(e -> startGame());
@@ -112,24 +115,24 @@ public class BlackJackTableGUI extends Application
     	});
         
         GridPane grid = new GridPane();
-        grid.add(titleBox, 0, 0, 3, 1);
-        grid.add(dealerHandValueBox, 0, 1);
-        grid.add(dealerCardBox, 1, 1);
+        grid.add(dealerHandValueBox, 0, 0);
+        grid.add(dealerCardBox, 0, 1);
+        dealerCardBox.setPrefSize(600, 300);
         grid.add(playerHandValueBox, 0, 2);
-        grid.add(playerCardBox, 1, 2);
-        grid.add(gameResultBox, 0, 3, 3, 1);
-        grid.add(startButton, 0, 4);
-        grid.add(hitButton, 1, 4);
-        grid.add(standButton, 2, 4);
+        grid.add(playerCardBox, 0, 3);
+        playerCardBox.setPrefSize(600, 300);
+        grid.add(gameResultBox, 0, 4, 3, 1);
+        grid.add(startButton, 0, 5);
+        grid.add(hitButton, 1, 5);
+        grid.add(standButton, 2, 5);
         grid.setStyle("-fx-background-color: forestgreen");
 
         
         Scene scene = new Scene(grid);
-
         
         primaryStage.setTitle("Blackjack");
         primaryStage.setScene(scene);
-        primaryStage.setHeight(750);
+        primaryStage.setHeight(850);
         primaryStage.setWidth(800);
         primaryStage.show();
     }
@@ -154,11 +157,12 @@ public class BlackJackTableGUI extends Application
 	    box.getChildren().clear();
 	    for (Card card : p.getHand()) 
 	    {
-	    	Image image = new Image("file:C:\\Users\\timot\\eclipse-workspace\\Project2\\cards\\"+card.getFace()+".png");
+	    	//mac /Users/timothy_bogun/eclipse-workspace/Project2/cards/10.png
+	    	Image image = new Image("file:/Users/timothy_bogun/eclipse-workspace/Project2/cards/"+card.getFace()+".png");
 	        ImageView iv = new ImageView(image);
 	        box.getChildren().add(iv);
 	    }
-	    handValue.setText(String.valueOf(p.valueOfHand()));
+	    handValue.setText("Value: "+String.valueOf(p.valueOfHand()));
 	}
 	private void endGame() 
 	{
