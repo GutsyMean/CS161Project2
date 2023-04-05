@@ -3,6 +3,7 @@ package blackJackGame;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,6 +42,12 @@ public class BlackJackTableGUI extends Application
     private HBox playerCardBox;
     private HBox playerHandBox;
     private HBox dealerHandBox;
+    private HBox buttonBox;
+    private int playerScore = 0;
+    private int dealerScore = 0;
+    private Label playerScoreBox;
+    private Label dealerScoreBox;
+    private VBox values;
 
     @Override
     public void start(Stage primaryStage) throws Exception 
@@ -85,8 +92,16 @@ public class BlackJackTableGUI extends Application
         gameResultLabel.setTextFill(Color.WHITE);
         gameResultBox = new HBox(gameResultLabel);
         gameResultBox.setAlignment(Pos.CENTER);
-        gameResultBox.setPadding(new Insets(0, 0, 0, 200));
-
+        gameResultBox.setPadding(new Insets(20, 0, 0, 500));
+        
+        playerScoreLabel = new Label("Player Score: " + playerScore);
+        playerScoreLabel.setTextFill(Color.WHITE);
+        playerScoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        dealerScoreLabel = new Label("Dealer Score: " + dealerScore);
+        dealerScoreLabel.setTextFill(Color.WHITE);
+        dealerScoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        values = new VBox(10, playerScoreLabel, dealerScoreLabel);
+        
         startButton = new Button("Start");
         startButton.setOnAction(e -> startGame());
         
@@ -114,6 +129,10 @@ public class BlackJackTableGUI extends Application
     	    endGame();
     	});
         
+        buttonBox = new HBox(10, startButton, hitButton, standButton);
+        buttonBox.setAlignment(Pos.CENTER_LEFT);
+        buttonBox.setPadding(new Insets(0, 0, 0, 320));
+        
         GridPane grid = new GridPane();
         grid.add(dealerHandValueBox, 0, 0);
         grid.add(dealerCardBox, 0, 1);
@@ -121,10 +140,11 @@ public class BlackJackTableGUI extends Application
         grid.add(playerHandValueBox, 0, 2);
         grid.add(playerCardBox, 0, 3);
         playerCardBox.setPrefSize(600, 300);
-        grid.add(gameResultBox, 0, 4, 3, 1);
-        grid.add(startButton, 0, 5);
-        grid.add(hitButton, 1, 5);
-        grid.add(standButton, 2, 5);
+        grid.add(buttonBox, 0, 5);
+        grid.add(values, 0, 6);
+        grid.add(gameResultBox, 0, 6, 3, 1);
+
+
         grid.setStyle("-fx-background-color: forestgreen");
 
         
@@ -168,18 +188,22 @@ public class BlackJackTableGUI extends Application
 	{
 	    hitButton.setDisable(true);
 	    standButton.setDisable(true);
-	    int playerValue = player.valueOfHand();
-	    int dealerValue = dealer.valueOfHand();
-	    if (playerValue > 21) {
+	    int playerHandValue = player.valueOfHand();
+	    int dealerHandValue = dealer.valueOfHand();
+	    if (playerHandValue > 21) {
 	        gameResultLabel.setText("Player Bust! Dealer Wins!");
-	    } else if (dealerValue > 21) {
+	        dealerScore++;
+	    } else if (dealerHandValue > 21) {
 	        gameResultLabel.setText("Dealer Bust! Player Wins!");
-	    } else if (playerValue > dealerValue) {
+	        playerScore++;
+	    } else if (playerHandValue > dealerHandValue) {
 	        gameResultLabel.setText("Player Wins!");
-	    } else if (dealerValue > playerValue) {
+	        playerScore++;
+	    } else if (dealerHandValue > playerHandValue) {
 	        gameResultLabel.setText("Dealer Wins!");
+	        dealerScore++;
 	    } else {
-	        gameResultLabel.setText("Tie Game!");
+	        gameResultLabel.setText("Push! No one wins.");
 	    }
 	    startButton.setDisable(false);
 	}
